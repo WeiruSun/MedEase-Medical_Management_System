@@ -1,0 +1,16 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}Patient List{% endblock %}
+
+{% block content %}
+    <h2>Patient List</h2>
+    <ul>
+        {% for patient in patient_list %}
+            <li>
+                <a href=""> {{ patient }}</a>
+            </li>
+            {%empty%}
+            <li><em>No patient found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

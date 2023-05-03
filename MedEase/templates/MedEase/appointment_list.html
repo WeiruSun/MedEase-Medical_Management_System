@@ -1,0 +1,15 @@
+{% extends 'MedEase/base.html' %}
+{% block title %}Appointment List{% endblock %}
+{% block content %}
+    <h2>Appointment List</h2>
+    <ul>
+        {% for appointment in appointment_list %}
+            <li>
+                <a href=""> {{ appointment }}</a>
+            </li>
+            {%empty%}
+            <li><em>No appointment found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
