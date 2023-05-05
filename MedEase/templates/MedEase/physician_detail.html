@@ -1,0 +1,52 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+Physician -{{ physician }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ physician }}</h2>
+    <ul>
+    <li>
+            <a href="{{ physician.get_update_url }}">
+                Edit Physician
+            </a>
+        </li>
+        <li>
+            <a href="{{ physician.get_delete_url }}">
+                Delete Physician
+            </a>
+    </ul>
+
+    <section>
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td>{{ physician.first_name }}</td>
+            </tr>
+
+            <tr>
+                <td>Last Name</td>
+                <td>{{ physician.last_name }}</td>
+            </tr>
+
+            <tr>
+                <td>Department</td>
+                <td>{{ physician.department }}</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+    <h3>Appointments</h3>
+    <ul>
+        {% for appointment in appointment_list %}
+            <li>
+                <a href="{{ appointment.get_absolute_url }}">{{ appointment }}</a>
+            </li>
+        {% empty %}
+            <li>No appointment</li>
+        {% endfor %}
+    </ul>
+    </section>
+{% endblock %}

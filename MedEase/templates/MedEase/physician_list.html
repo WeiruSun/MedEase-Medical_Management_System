@@ -4,10 +4,13 @@
 
 {% block content %}
     <h2>Physician List</h2>
+    <div>
+        <a href="{% url 'MedEase_physician_create_urlpattern' %}">Add New Physician</a>
+    </div>
     <ul>
         {% for physician in physician_list %}
             <li>
-                <a href=""> {{ physician }}</a>
+                <a href="{{ physician.get_absolute_url }}"> {{ physician }}</a>
             </li>
         {%empty%}
             <li><em>No physician found</em></li>

@@ -1,0 +1,26 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error Deleting registration
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting registration</h2>
+        <p>
+            You may not delete registration {{ registration }}.  This
+            registration is currently assigned to the following
+            visit:
+        </p>
+
+        <ul>
+
+            <li><a href="{{ visit.get_absolute_url }}">{{ visit }}</a></li>
+
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'MedEase_registration_list_urlpattern' %}">registration List</a>.
+        </p>
+    </div>
+{% endblock %}

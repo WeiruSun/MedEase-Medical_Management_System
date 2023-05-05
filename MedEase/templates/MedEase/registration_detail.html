@@ -1,0 +1,42 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Registration - {{ registration }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ registration }}</h2>
+        <ul>
+    <li>
+            <a href="{{ registration.get_update_url }}">
+                Edit registration
+            </a>
+        </li>
+        <li>
+            <a href="{{ registration.get_delete_url }}">
+                Delete registration
+            </a>
+    </ul>
+
+    <section>
+        <table>
+            <tr>
+                <th>Registration Date:</th>
+                <td>{{ registration_date }}</td>
+            </tr>
+            <tr>
+                <th> Physician:</th>
+                <td><a href="{{ physician.get_absolute_url }}" >{{ physician }}</a></td>
+            <tr>
+                <th>Patient:</th>
+                <td><a href="{{ patient.get_absolute_url }}">{{ patient }}</a></td>
+            </tr>
+            <tr>
+                <th>Appointment:</th>
+                <td><a href="{{ appointment.get_absolute_url }}">{{ appointment }}</a></td>
+            </tr>
+
+        </table>
+    </section>
+
+{% endblock %}

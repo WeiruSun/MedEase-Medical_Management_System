@@ -1,0 +1,27 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error Deleting appointment
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting appointment</h2>
+        <p>
+            You may not delete appointment {{ appointment }}.  This
+            appointment is currently assigned to the following
+            registered:
+        </p>
+
+        <ul>
+            {% for registration in registrations %}
+            <li><a href="{{ registration.get_absolute_url }}">{{ registration }}</a></li>
+            {%  endfor %}
+        </ul>
+    
+
+        <p>
+            Return to <a href="{% url 'MedEase_appointment_list_urlpattern' %}">appointment List</a>.
+        </p>
+    </div>
+{% endblock %}

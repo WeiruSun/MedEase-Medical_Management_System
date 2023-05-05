@@ -1,0 +1,15 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Update Patient
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ patient.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button button-primary">Update Patient</button>
+    </form>
+{% endblock %}

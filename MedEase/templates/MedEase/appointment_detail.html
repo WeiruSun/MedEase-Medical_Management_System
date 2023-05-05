@@ -1,0 +1,41 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Appointment - {{ appointment }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ appointment }}</h2>
+    <ul>
+    <li>
+            <a href="{{ appointment.get_update_url }}">
+                Edit appointment
+            </a>
+        </li>
+        <li>
+            <a href="{{ appointment.get_delete_url }}">
+                Delete appointment
+            </a>
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <th>Appointment Date:</th>
+                <td>{{ appointment.appointment_date }}</td>
+            </tr>
+            <tr>
+                <th>Appointment Time:</th>
+                <td>{{ appointment.time_slot.start_time }} -- {{ appointment.time_slot.end_time }}</td>
+            </tr>
+            <tr>
+                <th>Physician:</th>
+                <td><a href="{{ physician.get_absolute_url }}" >{{ physician }}</a></td>
+            </tr>
+            <tr>
+                <th>Status:</th>
+                <td>{{ appointment.get_status }}</td>
+
+        </table>
+    </section>
+
+{% endblock %}

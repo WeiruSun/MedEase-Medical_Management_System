@@ -1,0 +1,45 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+Nurse -{{ nurse }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ nurse }}</h2>
+    <ul>
+    <li>
+            <a href="{{ nurse.get_update_url }}">
+                Edit nurse
+            </a>
+        </li>
+        <li>
+            <a href="{{ nurse.get_delete_url }}">
+                Delete nurse
+            </a>
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td>{{ nurse.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Last Name</td>
+                <td>{{ nurse.last_name }}</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+    <h3>pre-check</h3>
+    <ul>
+        {% for visit in visit_list %}
+            <li>
+                <a href="{{ visit.get_absolute_url }}">{{ visit }}</a>
+            </li>
+        {% empty %}
+            <li>No Visit</li>
+        {% endfor %}
+    </ul>
+    </section>
+{% endblock %}

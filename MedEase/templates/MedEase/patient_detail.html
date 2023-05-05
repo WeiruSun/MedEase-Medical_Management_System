@@ -1,0 +1,87 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+Patient -{{ patient }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ patient }}</h2>
+    <ul>
+    <li>
+            <a href="{{ patient.get_update_url }}">
+                Edit patient
+            </a>
+        </li>
+        <li>
+            <a href="{{ patient.get_delete_url }}">
+                Delete patient
+            </a>
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <td>First Name</td>
+                <td>{{ patient.first_name }}</td>
+            </tr>
+
+            <tr>
+                <td>Last Name</td>
+                <td>{{ patient.last_name }}</td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+    <h3>Registered Appointment</h3>
+    <ul>
+        {% for registration in registration_list %}
+            <li>
+                <a href="{{  registration.get_absolute_url }}">{{ registration }}</a>
+            </li>
+        {% empty %}
+            <li>No registration</li>
+        {% endfor %}
+    </ul>
+    </section>
+
+    <section>
+    <h3>Medical History</h3>
+    <ul>
+        {% for visit in visit_list %}
+            <li>
+                <a href="">{{ visit }}</a>
+            </li>
+        {% empty %}
+            <li>No Visit</li>
+        {% endfor %}
+    </ul>
+    </section>
+
+
+    <section>
+    <h3>Prescription</h3>
+    <ul>
+        {% for prescription in prescription_list %}
+            <li>
+                <a href="">{{ prescription }}</a>
+            </li>
+        {% empty %}
+            <li>No Prescription</li>
+        {% endfor %}
+    </ul>
+    </section>
+
+    <section>
+    <h3>Lab Test</h3>
+    <ul>
+        {% for test in test_list %}
+            <li>
+                <a href="">{{ test }}</a>
+            </li>
+        {% empty %}
+            <li>No Lab Test</li>
+        {% endfor %}
+    </ul>
+    </section>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error Deleting physician
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting physician</h2>
+        <p>
+            You may not delete physician {{ physician }}.  This
+            physician is currently assigned to the following
+            appointment:
+        </p>
+
+        <ul>
+            {% for appointment in appointments %}
+            <li><a href="{{ appointment.get_absolute_url }}">{{ appointment }}</a></li>
+            {%  endfor %}
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'MedEase_physician_list_urlpattern' %}">physician List</a>.
+        </p>
+    </div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Visit - {{ visit }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ visit }}</h2>
+       <ul>
+    <li>
+            <a href="{{ visit.get_update_url }}">
+                Edit visit
+            </a>
+        </li>
+        <li>
+            <a href="{{ visit.get_delete_url }}">
+                Delete visit
+            </a>
+    </ul>
+
+    <section>
+        <table>
+            <tr>
+                <th>Patient:</th>
+                <td><a href="{{ patient.get_absolute_url }}">{{ patient }}</a></td>
+            </tr>
+            <tr>
+                <th>Physician:</th>
+                <td><a href="{{ physician.get_absolute_url }}" >{{ physician }}</a></td>
+            <tr>
+            <tr>
+                <th>prep nurse:</th>
+                <td><a href="{{ nurse.get_absolute_url }}" >{{ nurse }}</a></td>
+            </tr>
+        </table>
+    </section>
+
+    <section>
+        <table>
+            <tr>
+                <th>Appointment:</th>
+                <td><a href="{{ appointment.get_absolute_url }}">{{ appointment }}</a></td>
+            </tr>
+        </table>
+    </section>
+
+        <section>
+        {#    todo: add prescription function in model, add prescription in views, add prescription in template#}
+        <h3>Diagnosis</h3>
+        <ul>
+            {% for diagnosis in diagnoses %}
+                <li><a href="{{ diagnosis.get_absolute_url }}">{{ diagnosis }}</a></li>
+            {% empty %}
+                <li>No diagnoses</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+{#    todo: add prescription function in model, add prescription in views, add prescription in template#}
+    <h3>Prescription</h3>
+    <ul>
+        {% for prescription in prescriptions %}
+            <li><a href="{{ prescription.get_absolute_url }}">{{ prescription }}</a></li>
+        {% empty %}
+            <li>No prescriptions</li>
+        {% endfor %}
+    </ul>
+    </section>
+
+    <section>
+        {#    todo: add prescription function in model, add prescription in views, add prescription in template#}
+        <h3>Test</h3>
+        <ul>
+            {% for test in tests %}
+                <li><a href="{{ test.get_absolute_url }}">{{ test }}</a></li>
+            {% empty %}
+                <li>No tests</li>
+            {% endfor %}
+        </ul>
+    </section>
+
+    <section>
+    <h3>Procedure</h3>
+    <ul>
+        {% for procedure in procedures %}
+            <li><a href="{{ procedure.get_absolute_url }}">{{ procedure }}</a></li>
+        {% empty %}
+            <li>No procedures</li>
+        {% endfor %}
+    </ul>
+    </section>
+
+
+
+{% endblock %}

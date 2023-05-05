@@ -25,20 +25,30 @@
     <nav>
         <ul>
             <li>
-                <a href="">
+                <a href="{% url 'MedEase_physician_list_urlpattern' %}">
                     Physician</a></li>
             <li>
-                <a href="">
+                <a href="{% url 'MedEase_nurse_list_urlpattern' %}">
                     Nurse</a></li>
             <li>
-                <a href="">
+                <a href="{% url 'MedEase_patient_list_urlpattern' %}">
                     Patient</a></li>
             <li>
-                <a href="">
+                <a href="{% url 'MedEase_appointment_list_urlpattern' %}">
                     Appointment</a></li>
             <li>
-                <a href="">
+                <a href="{% url 'MedEase_registration_list_urlpattern' %}">
                     Registration</a></li>
+
+{#            <li>#}
+{#                <a href="">#}
+{#                    Test</a></li>#}
+{#            <li>#}
+{#                <a href="">#}
+{#                    Prescription</a></li>#}
+            <li>
+                <a href="{% url 'MedEase_visit_list_urlpattern' %}">
+                    Visit</a></li>
         </ul>
     </nav>
     <main>

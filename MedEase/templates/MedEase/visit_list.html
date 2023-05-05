@@ -1,0 +1,18 @@
+{% extends 'MedEase/base.html' %}
+{% block title %}Visit List{% endblock %}
+{% block content %}
+    <h2>Visit List</h2>
+    <div>
+        <a href="{% url 'MedEase_visit_create_urlpattern' %}">Add New Visit</a>
+    </div>
+
+    <ul>
+        {% for visit in visit_list %}
+            <li>
+                <a href="{{visit.get_absolute_url }}"> {{ visit }}</a>
+            </li>
+        {%empty%}
+            <li><em>No visit found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

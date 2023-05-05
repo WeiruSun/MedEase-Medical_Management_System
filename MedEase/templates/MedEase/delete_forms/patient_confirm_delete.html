@@ -1,0 +1,19 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Delete patient
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ patient.get_delete_url }}"
+        method="post">
+        {% csrf_token %}
+        <p>
+            Are you sure that you want to delete
+            patient {{ patient }}?
+        </p>
+        <a href="{{ patient.get_absolute_url }}">Cancel</a>
+        <button type="submit">Delete patient</button>
+    </form>
+{% endblock %}

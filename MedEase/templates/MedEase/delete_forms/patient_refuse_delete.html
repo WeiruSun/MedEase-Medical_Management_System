@@ -1,0 +1,28 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error Deleting patient
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting patient</h2>
+        <p>
+            You may not delete patient {{ patient }}.  This
+            patient is currently assigned to the following
+            activities:
+        </p>
+
+<h3> Registration</h3>
+        <ul>
+            {% for registration in registrations %}
+            <li><a href="{{ registration.get_absolute_url }}">{{ registration }}</a></li>
+            {%  endfor %}
+        </ul>
+
+
+        <p>
+            Return to <a href="{% url 'MedEase_patient_list_urlpattern' %}">patient List</a>.
+        </p>
+    </div>
+{% endblock %}

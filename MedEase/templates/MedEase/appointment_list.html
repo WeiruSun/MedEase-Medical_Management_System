@@ -2,10 +2,13 @@
 {% block title %}Appointment List{% endblock %}
 {% block content %}
     <h2>Appointment List</h2>
+        <div>
+        <a href="{% url 'MedEase_appointment_create_urlpattern' %}">Add New Appointment</a>
+    </div>
     <ul>
         {% for appointment in appointment_list %}
             <li>
-                <a href=""> {{ appointment }}</a>
+                <a href="{{ appointment.get_absolute_url }}"> {{ appointment }}</a>
             </li>
             {%empty%}
             <li><em>No appointment found</em></li>

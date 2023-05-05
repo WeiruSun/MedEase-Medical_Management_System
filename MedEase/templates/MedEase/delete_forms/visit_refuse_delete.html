@@ -1,0 +1,26 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error Deleting visit
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting visit</h2>
+        <p>
+            You may not delete visit {{ visit }}.  This
+            visit is currently assigned to the following
+            diagnoses:
+        </p>
+
+        <ul>
+            {% for diagnosis in diagnoses %}
+            <li><a href="{{ diagnosis.get_absolute_url }}">{{ diagnosis }}</a></li>
+            {%  endfor %}
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'MedEase_visit_list_urlpattern' %}">visit List</a>.
+        </p>
+    </div>
+{% endblock %}

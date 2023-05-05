@@ -1,0 +1,34 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error Deleting nurse
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting nurse</h2>
+        <p>
+            You may not delete nurse {{ nurse }}.  This
+            nurse is currently assigned to the following
+            activities:
+        </p>
+
+        <ul>
+            {% for visit in visits %}
+            <li><a href="{{ visit.get_absolute_url }}">{{ visit }}</a></li>
+            {%  endfor %}
+        </ul>
+
+    <ul>
+            {% for test in have_tests %}
+            <li><a href="{{ have_test.get_absolute_url }}">{{ have_test }}</a></li>
+            {%  endfor %}
+    </ul>
+
+
+
+        <p>
+            Return to <a href="{% url 'MedEase_nurse_list_urlpattern' %}">nurse List</a>.
+        </p>
+    </div>
+{% endblock %}
