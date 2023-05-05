@@ -318,11 +318,12 @@ class AppointmentDetail(View):
             Appointment,
             pk=pk
         )
+        status = appointment.get_status()
         return render(
             request,
             'MedEase/appointment_detail.html',
             {'appointment': appointment, 'time_slot': appointment.time_slot,
-             'physician': appointment.physician}
+             'physician': appointment.physician, 'status': status}
         )
 
 
