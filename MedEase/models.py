@@ -263,7 +263,7 @@ class Diagnosis(models.Model):
     disease = models.ForeignKey(Disease, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '%s, %s' % (self.visit.registration.patient.first_name, self.disease.disease_name)
+        return '%s' % self.disease.disease_name
 
     def get_absolute_url(self):
         return reverse('MedEase_diagnosis_detail_urlpattern',
@@ -272,11 +272,6 @@ class Diagnosis(models.Model):
 
     def get_update_url(self):
         return reverse('MedEase_diagnosis_update_urlpattern',
-                       kwargs={'pk': self.pk}
-                       )
-
-    def get_delete_url(self):
-        return reverse('MedEase_diagnosis_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -306,7 +301,6 @@ class HaveTest(models.Model):
     visit = models.ForeignKey(Visit, on_delete=models.CASCADE, related_name='have_test')
     nurse = models.ForeignKey(Nurse, on_delete=models.CASCADE, related_name='have_test')
     test_date = models.DateField()
-    # todo: add test result, test_result should be a choice field
     test_result = models.CharField(max_length=255)
 
     def __str__(self):
@@ -365,7 +359,7 @@ class Prescription(models.Model):
     dose = models.CharField(max_length=255)
 
     def __str__(self):
-        return '%s, %s' % (self.visit.registration.patient.first_name, self.medication.name)
+        return ' %s' % self.medication.name
 
     def get_absolute_url(self):
         return reverse('MedEase_prescription_detail_urlpattern',
@@ -409,7 +403,7 @@ class ProcedureAssignment(models.Model):
     procedure = models.ForeignKey(Procedure, on_delete=models.CASCADE, related_name='procedure_assignment')
 
     def __str__(self):
-        return '%s, %s' % (self.visit.registration.patient.first_name, self.operator.first_name)
+        return '%s' % self.operator.first_name
 
     def get_absolute_url(self):
         return reverse('MedEase_procedureassignment_detail_urlpattern',

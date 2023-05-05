@@ -3,12 +3,12 @@
 {% block content %}
     <h2>Completed test List</h2>
         <div>
-        <a href="{% url 'MedEase_test_create_urlpattern' %}">Add New test</a>
+        <a href="{% url 'MedEase_haveTest_create_urlpattern' %}">Add New test</a>
     </div>
     <ul>
-        {% for test in test_list %}
+        {% for haveTest in have_test_list %}
             <li>
-                <a href="{{ haveTest.get_absolute_url }}"> {{ test }}</a>
+                <a href="{{ haveTest.get_absolute_url }}"> {{ haveTest }}</a>
             </li>
             {%empty%}
             <li><em>No test found</em></li>

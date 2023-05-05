@@ -1,0 +1,14 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}diagnosis List{% endblock %}
+{% block content %}
+    <ul>
+        {% for diagnosis in diagnosis_list %}
+            <li>
+                <a href="{{ diagnosis.get_absolute_url }}"> {{ diagnosis }}</a>
+            </li>
+            {%empty%}
+            <li><em>No diagnosis found</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,18 +1,13 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 
 from MedEase.forms import PhysicianForm, NurseForm, PatientForm, AppointmentForm, RegistrationForm, VisitForm, \
     DiseaseForm, \
-    TestForm, HaveTestForm, MedicationForm, PrescriptionForm, ProcedureForm, ProcedureAssignmentForm
+    TestForm, HaveTestForm, MedicationForm, PrescriptionForm, ProcedureForm, ProcedureAssignmentForm, DiagnosisForm
 from MedEase.models import Physician, Nurse, Patient, Appointment, Registration, TimeSlot, Visit, Prescription, Test, \
-    HaveTest
+    HaveTest, Diagnosis
 from MedEase.utils import ObjectCreateMixin
-
-
-# def physician_list_view(request):
-#     physician_list = Physician.objects.all()
-#     # physician_list = Physician.objects.none()
-#     return render(request, 'MedEase/physician_list.html', {'physician_list': physician_list})
 
 
 class PhysicianList(View):
@@ -223,10 +218,17 @@ class PatientDetail(View):
             pk=pk
         )
         registration_list = patient.registration.all()
+        visit_list = []
+        for registration in registration_list:
+            visit = registration.visit
+            visit_list.append(visit)
+
         return render(
             request,
             'MedEase/patient_detail.html',
-            {'patient': patient, 'registration_list': registration_list}
+            {'patient': patient,
+             'registration_list': registration_list,
+             'visit_list': visit_list, }
         )
 
 
@@ -467,21 +469,27 @@ class RegistrationUpdate(View):
 class RegistrationDelete(View):
     def get(self, request, pk):
         registration = self.get_object(pk)
-        visit = registration.visit
+        try:
+            visit = registration.visit
+        except ObjectDoesNotExist:
+            visit = None
+
         # TODO: I feel like there would be a bug here because of the one-to-one relationship
-        if visit:
+        if not visit:
+            print("well there is no visit")
+            return render(
+                request,
+                'MedEase/delete_forms/registration_confirm_delete.html',
+                {'registration': registration}
+            )
+        else:
+            visit = registration.visit
             return render(
                 request,
                 'MedEase/delete_forms/registration_refuse_delete.html',
                 {'registration': registration,
                  'visit': visit,
                  }
-            )
-        else:
-            return render(
-                request,
-                'MedEase/delete_forms/registration_confirm_delete.html',
-                {'registration': registration}
             )
 
     def get_object(self, pk):
@@ -518,9 +526,9 @@ class VisitDetail(View):
              'nurse': visit.prep_nurse,
              'physician': visit.registration.appointment.physician,
              'appointment': visit.registration.appointment,
-             # 'diagnosis': visit.diagnosis.all(),
-             # 'test': visit.test.all(),
-             # 'prescription': visit.prescription.all(),
+             'diagnoses': visit.diagnosis.all(),
+             'testResults': visit.have_test.all(),
+             'prescription_list': visit.prescription.all(),
              # 'procedure': visit.procedure.all(),
              },
 
@@ -617,13 +625,115 @@ class HaveTestDetail(View):
         return render(
             request,
             'MedEase/have_test_detail.html',
-            {'have_test': have_test}
+            {'have_test': have_test,
+             'test': have_test.test, }
         )
 
 
 class HaveTestCreate(ObjectCreateMixin, View):
     form_class = HaveTestForm
     template_name = 'MedEase/forms/have_test_form.html'
+
+
+class HaveTestUpdate(View):
+    form_class = HaveTestForm
+    template_name = 'MedEase/update_forms/have_test_form_update.html'
+
+    def get(self, request, pk):
+        have_test = get_object_or_404(
+            HaveTest,
+            pk=pk
+        )
+        bound_form = self.form_class(instance=have_test)
+        return render(
+            request,
+            self.template_name,
+            {'form': bound_form, 'have_test': have_test}
+        )
+
+    def post(self, request, pk):
+        have_test = get_object_or_404(
+            HaveTest,
+            pk=pk
+        )
+        bound_form = self.form_class(request.POST, instance=have_test)
+        if bound_form.is_valid():
+            new_object = bound_form.save()
+            return redirect(new_object)
+        else:
+            context = {
+                'form': bound_form,
+                'have_test': have_test,
+            }
+            return render(
+                request,
+                self.template_name,
+                context
+            )
+
+
+class DiagnosisList(View):
+    def get(self, request):
+        return render(
+            request,
+            'MedEase/diagnosis_list.html',
+            {'diagnosis_list': Diagnosis.objects.all()}
+        )
+
+
+class DiagnosisDetail(View):
+    def get(self, request, pk):
+        diagnosis = get_object_or_404(
+            Diagnosis,
+            pk=pk
+        )
+        return render(
+            request,
+            'MedEase/diagnosis_detail.html',
+            {'diagnosis': diagnosis}
+        )
+
+
+class DiagnosisCreate(ObjectCreateMixin, View):
+    form_class = DiagnosisForm
+    template_name = 'MedEase/forms/diagnosis_form.html'
+
+
+class DiagnosisUpdate(View):
+    form_class = DiagnosisForm
+    template_name = 'MedEase/update_forms/diagnosis_form_update.html'
+
+    def get(self, request, pk):
+        diagnosis = get_object_or_404(
+            Diagnosis,
+            pk=pk
+        )
+        bound_form = self.form_class(instance=diagnosis)
+        return render(
+            request,
+            self.template_name,
+            {'form': bound_form, 'diagnosis': diagnosis}
+        )
+
+    def post(self, request, pk):
+        diagnosis = get_object_or_404(
+            Diagnosis,
+            pk=pk
+        )
+        bound_form = self.form_class(request.POST, instance=diagnosis)
+        if bound_form.is_valid():
+            new_object = bound_form.save()
+            return redirect(new_object)
+        else:
+            context = {
+                'form': bound_form,
+                'diagnosis': diagnosis,
+            }
+            return render(
+                request,
+                self.template_name,
+                context
+            )
 
 
 class PrescriptionList(View):
@@ -635,10 +745,10 @@ class PrescriptionList(View):
         )
 
 
-class PrescriptionDetails(View):
+class PrescriptionDetail(View):
     def get(self, request, pk):
         prescription = get_object_or_404(
-            Visit,
+            Prescription,
             pk=pk
         )
         return render(
@@ -647,73 +757,74 @@ class PrescriptionDetails(View):
             {'prescription': prescription}
         )
 
-# class PrescriptionCreate(ObjectCreateMixin, View):
-#     form_class = PrescriptionForm
-#     template_name = 'MedEase/forms/prescription_form.html'
-#
-#
-# class PrescriptionUpdate(View):
-#     form_class = PrescriptionForm
-#     template_name = 'MedEase/update_forms/prescription_form_update.html'
-#
-#     def get(self, request, pk):
-#         prescription = get_object_or_404(
-#             Prescription,
-#             pk=pk
-#         )
-#         bound_form = self.form_class(instance=prescription)
-#         return render(
-#             request,
-#             self.template_name,
-#             {'form': bound_form, 'prescription': prescription}
-#         )
-#
-#     def post(self, request, pk):
-#         prescription = get_object_or_404(
-#             Prescription,
-#             pk=pk
-#         )
-#         bound_form = self.form_class(request.POST, instance=prescription)
-#         if bound_form.is_valid():
-#             new_object = bound_form.save()
-#             return redirect(new_object)
-#         else:
-#             context = {
-#                 'form': bound_form,
-#                 'prescription': prescription,
-#             }
-#             return render(
-#                 request,
-#                 self.template_name,
-#                 context
-#             )
+
+class PrescriptionCreate(ObjectCreateMixin, View):
+    form_class = PrescriptionForm
+    template_name = 'MedEase/forms/prescription_form.html'
 
 
-# class PrescriptionDelete(View):
-#     def get(self, request, pk):
-#         prescription = self.get_object(pk)
-#         medications = prescription.medications.all()
-#         if medications.count() > 0:
-#             return render(
-#                 request,
-#                 'MedEase/delete_forms/prescription_refuse_delete.html',
-#                 {'prescription': prescription,
-#                  'medications': medications,
-#                  }
-#             )
-#         else:
-#             return render(
-#                 request,
-#                 'MedEase/delete_forms/prescription_confirm_delete.html',
-#                 {'prescription': prescription}
-#             )
-#
-#     def get_object(self, pk):
-#         return get_object_or_404(
-#             Prescription,
-#             pk=pk)
-#
-#     def post(self, request, pk):
-#         prescription = self.get_object(pk)
-#         prescription.delete()
-#         return redirect('MedEase_prescription_list_urlpattern')
+class PrescriptionUpdate(View):
+    form_class = PrescriptionForm
+    template_name = 'MedEase/update_forms/prescription_form_update.html'
+
+    def get(self, request, pk):
+        prescription = get_object_or_404(
+            Prescription,
+            pk=pk
+        )
+        bound_form = self.form_class(instance=prescription)
+        return render(
+            request,
+            self.template_name,
+            {'form': bound_form, 'prescription': prescription}
+        )
+
+    def post(self, request, pk):
+        prescription = get_object_or_404(
+            Prescription,
+            pk=pk
+        )
+        bound_form = self.form_class(request.POST, instance=prescription)
+        if bound_form.is_valid():
+            new_object = bound_form.save()
+            return redirect(new_object)
+        else:
+            context = {
+                'form': bound_form,
+                'prescription': prescription,
+            }
+            return render(
+                request,
+                self.template_name,
+                context
+            )
+
+
+class PrescriptionDelete(View):
+    def get(self, request, pk):
+        prescription = self.get_object(pk)
+        medications = prescription.medications.all()
+        if medications.count() > 0:
+            return render(
+                request,
+                'MedEase/delete_forms/prescription_refuse_delete.html',
+                {'prescription': prescription,
+                 'medications': medications,
+                 }
+            )
+        else:
+            return render(
+                request,
+                'MedEase/delete_forms/prescription_confirm_delete.html',
+                {'prescription': prescription}
+            )
+
+    def get_object(self, pk):
+        return get_object_or_404(
+            Prescription,
+            pk=pk)
+
+    def post(self, request, pk):
+        prescription = self.get_object(pk)
+        prescription.delete()
+        return redirect('MedEase_prescription_list_urlpattern')

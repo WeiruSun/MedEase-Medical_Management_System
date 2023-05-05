@@ -44,9 +44,9 @@
         </table>
     </section>
 
-        <section>
-        {#    todo: add prescription function in model, add prescription in views, add prescription in template#}
-        <h3>Diagnosis</h3>
+    <section>
+        <h2>Diagnosis</h2>
+        <div><a href="{% url 'MedEase_diagnosis_create_urlpattern' %}">Add New diagnosis</a></div>
         <ul>
             {% for diagnosis in diagnoses %}
                 <li><a href="{{ diagnosis.get_absolute_url }}">{{ diagnosis }}</a></li>
@@ -57,38 +57,27 @@
     </section>
 
     <section>
-{#    todo: add prescription function in model, add prescription in views, add prescription in template#}
-    <h3>Prescription</h3>
-    <ul>
-        {% for prescription in prescriptions %}
-            <li><a href="{{ prescription.get_absolute_url }}">{{ prescription }}</a></li>
-        {% empty %}
-            <li>No prescriptions</li>
-        {% endfor %}
-    </ul>
-    </section>
-
-    <section>
-        {#    todo: add prescription function in model, add prescription in views, add prescription in template#}
-        <h3>Test</h3>
+        <h3>Prescription</h3>
+                <div><a href="{% url 'MedEase_prescription_create_urlpattern' %}">Add New prescription</a></div>
         <ul>
-            {% for test in tests %}
-                <li><a href="{{ test.get_absolute_url }}">{{ test }}</a></li>
+            {% for prescription in prescription_list %}
+                <li><a href="{{ prescription.get_absolute_url }}">{{ prescription }}</a></li>
             {% empty %}
-                <li>No tests</li>
+                <li>No prescriptions</li>
             {% endfor %}
         </ul>
     </section>
 
     <section>
-    <h3>Procedure</h3>
-    <ul>
-        {% for procedure in procedures %}
-            <li><a href="{{ procedure.get_absolute_url }}">{{ procedure }}</a></li>
-        {% empty %}
-            <li>No procedures</li>
-        {% endfor %}
-    </ul>
+        <h3>Test</h3>
+        <div><a href="{% url 'MedEase_haveTest_create_urlpattern' %}">Add New test result</a></div>
+        <ul>
+            {% for have_test in testResults %}
+                <li><a href="{{ have_test.get_absolute_url }}">{{ have_test }}</a></li>
+            {% empty %}
+                <li>No tests</li>
+            {% endfor %}
+        </ul>
     </section>
 
 

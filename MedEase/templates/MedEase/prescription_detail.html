@@ -1,0 +1,28 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+prescription -{{ prescription }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ prescription }}</h2>
+    <ul>
+    <li>
+            <a href="{{ prescription.get_update_url }}">
+                Edit prescription
+            </a>
+        </li>
+    </ul>
+
+    <section>
+        <table>
+            <tr>
+                <td>Medication Name:</td>
+                <td>{{ prescription.medication }}</td>
+            </tr>
+            <tr>
+                <td>Medication Dosage:</td>
+                <td>{{ prescription.dose }}</td>
+        </table>
+    </section>
+{% endblock %}

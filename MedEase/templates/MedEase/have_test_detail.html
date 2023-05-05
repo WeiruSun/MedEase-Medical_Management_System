@@ -1,0 +1,36 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+have_test -{{ have_test }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ have_test }}</h2>
+    <ul>
+    <li>
+            <a href="{{ have_test.get_update_url }}">
+                Edit test result
+            </a>
+        </li>
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <td>test Name: </td>
+                <td>{{ test.test_name }}</td>
+            </tr>
+            <tr>
+                <td>test Result: </td>
+                <td>{{ have_test.test_result }}</td>
+            </tr>
+            <tr>
+                <td>test Date: </td>
+                <td>{{ have_test.test_date }}</td>
+            </tr>
+            <tr>
+                <td>test operator: </td>
+                <td>{{ have_test.nurse }}</td>
+        </table>
+    </section>
+
+{% endblock %}

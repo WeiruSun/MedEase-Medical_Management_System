@@ -1,0 +1,25 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+    Error creating registration
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error creating registration</h2>
+        <p>
+            You may not creat registration with appointment{{ current_appointment }}.
+            your have another appointment with {{ previous_appointment.patient }} at {{ previous_appointment.start_time }}.
+        </p>
+
+        <ul>
+
+            <li><a href="{{ previous_appointment.get_absolute_url }}">{{ previous_appointment }}</a></li>
+
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'MedEase_registration_list_urlpattern' %}">registration List</a>.
+        </p>
+    </div>
+{% endblock %}

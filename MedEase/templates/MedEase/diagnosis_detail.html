@@ -1,0 +1,25 @@
+{% extends 'MedEase/base.html' %}
+
+{% block title %}
+diagnosis -{{ diagnosis }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ diagnosis }}</h2>
+    <ul>
+    <li>
+            <a href="{{ diagnosis.get_update_url }}">
+                Edit diagnosis
+            </a>
+        </li>
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <td>Disease Name: </td>
+                <td>{{ diagnosis.disease }}</td>
+            </tr>
+        </table>
+    </section>
+
+{% endblock %}
